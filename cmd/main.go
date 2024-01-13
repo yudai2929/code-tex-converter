@@ -1,15 +1,15 @@
 package main
 
 import (
-	"code-tex-converter/pkg/filewalker"
-	"code-tex-converter/pkg/latex"
-	"code-tex-converter/pkg/utils"
 	"context"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/urfave/cli/v3"
+	"github.com/yudai2929/code-tex-converter/pkg/filewalker"
+	"github.com/yudai2929/code-tex-converter/pkg/latex"
+	"github.com/yudai2929/code-tex-converter/pkg/utils"
 )
 
 func main() {
