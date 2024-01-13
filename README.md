@@ -26,6 +26,8 @@ code-tex-converter --target <directory-path> [options]
 
 - `--lstinput`, `-i`: If specified, it uses lstinputlisting to incorporate source code into LaTeX. Default is false.
 
+- `--base`, `-b`: Specifies the base directory from which relative paths are calculated. If not specified, the current working directory is used as the base.
+
 ## Example
 
 To convert source code in a specific directory to LaTeX listing format:
@@ -38,4 +40,10 @@ To use lstinputlisting for incorporating source code:
 
 ```bash
 code-tex-converter --target /path/to/source/code --lstinput
+```
+
+To convert source code in a specific directory to LaTeX listing format, with a specific base directory:
+
+```bash
+code-tex-converter --target /path/to/source/code --base /path/to/base/directory
 ```
