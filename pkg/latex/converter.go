@@ -7,21 +7,41 @@ import (
 	"strings"
 )
 
-func Convert(paths []string, isLstInput bool) ([]string, error) {
+func Convert(paths []string, isLstInput bool, targetDir string, basePath string) ([]string, error) {
 	converted := []string{}
 	for _, path := range paths {
 		language := determineLanguage(path)
-		if isLstInput {
-			converted = append(converted, lstInputListing(language, path))
-		} else {
-			content, err := os.ReadFile(path)
-			if err != nil {
-				return nil, err
-			}
-			converted = append(converted, listing(language, path, string(content)))
+
+		resolvedPath, err := resolvePath(targetDir, path, basePath)
+
+		if err != nil {
+			return nil, err
 		}
+
+		if isLstInput {
+			converted = append(converted, lstInputListing(language, resolvedPath))
+			continue
+		}
+
+		content, err := os.ReadFile(path)
+
+		if err != nil {
+			return nil, err
+		}
+		converted = append(converted, listing(language, resolvedPath, string(content)))
 	}
 	return converted, nil
+}
+
+func resolvePath(targetDir, path, basePath string) (string, error) {
+	relPath, err := filepath.Rel(targetDir, path)
+	if err != nil {
+		return "", err
+	}
+	if basePath == "" {
+		return relPath, nil
+	}
+	return basePath + "/" + relPath, nil
 }
 
 func lstInputListing(language, path string) string {

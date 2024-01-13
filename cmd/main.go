@@ -3,6 +3,7 @@ package main
 import (
 	"code-tex-converter/pkg/filewalker"
 	"code-tex-converter/pkg/latex"
+	"code-tex-converter/pkg/utils"
 	"context"
 	"fmt"
 	"log"
@@ -22,6 +23,12 @@ func main() {
 				Aliases:  []string{"t"},
 				Required: true,
 			},
+			&cli.StringFlag{
+				Name:    "base",
+				Value:   "",
+				Usage:   "base path",
+				Aliases: []string{"b"},
+			},
 			&cli.BoolFlag{
 				Name:    "lstinput",
 				Value:   false,
@@ -31,26 +38,35 @@ func main() {
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			dir := cmd.String("target")
-			lstinput := cmd.Bool("lstinput")
+			islLtInput := cmd.Bool("lstinput")
+			basePath := cmd.String("base")
+
+			resolvedBasePath := utils.TrimPath(basePath)
 
 			paths, err := filewalker.Walk(dir)
 			if err != nil {
 				return err
 			}
 
-			converted, err := latex.Convert(paths, lstinput)
+			texListings, err := latex.Convert(paths, islLtInput, dir, resolvedBasePath)
+
 			if err != nil {
 				return err
 			}
 
-			for _, c := range converted {
-				fmt.Println(c)
-			}
+			displayTexListings(texListings)
+
 			return nil
 		},
 	}
 
 	if err := cmd.Run(context.Background(), os.Args); err != nil {
 		log.Fatal(err)
+	}
+}
+
+func displayTexListings(texListings []string) {
+	for _, texListing := range texListings {
+		fmt.Println(texListing)
 	}
 }
