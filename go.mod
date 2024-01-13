@@ -1,4 +1,4 @@
-module code-tex-converter
+module github.com/yudai2929/code-tex-converter
 
 go 1.20
 
