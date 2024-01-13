@@ -9,7 +9,7 @@ Code-Tex-Converter is a command-line tool that converts programming source code 
 To install Code-Tex-Converter, follow these steps (requires a Go language development environment):
 
 ```bash
-go get github.com/yudai2929/code-tex-converter
+go install github.com/yudai2929/code-tex-converter
 ```
 
 ## Usage
